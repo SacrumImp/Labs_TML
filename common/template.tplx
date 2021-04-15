@@ -7,14 +7,12 @@
 ((*- set nb_title = nb.metadata.get('title', '') or resources['metadata']['name'] -*))
 
 ((* block packages *))
-    \usepackage[T2A, T1]{fontenc}
-    \usepackage[utf8]{inputenc}
-    \setsansfont{CMU Sans Serif}
-    \setmainfont{Arial Unicode}
-    \setmonofont{CMU Typewriter Text}
-    % \setsansfont{Arial}
-    % \setmainfont{Times New Roman}
-    % \setmonofont{Consolas}
+    \usepackage[russian,english]{babel}
+    \usepackage{fontspec}
+
+    \setsansfont{PT Sans}
+    \setmainfont{PT Serif}
+    \setmonofont{PT Mono}
 
     \usepackage{polyglossia}
     \setmainlanguage{russian}

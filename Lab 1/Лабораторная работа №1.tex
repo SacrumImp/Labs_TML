@@ -1,0 +1,1466 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \usepackage[russian,english]{babel}
+    \usepackage{fontspec}
+
+    \setsansfont{PT Sans}
+    \setmainfont{PT Serif}
+    \setmonofont{PT Mono}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Разведочный анализ данных. Исследование и визуализация данных.}
+    
+    
+    
+    \author{Алпеев Владислав Сергеевич}
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    Разведочный анализ данных. Исследование и визуализация данных.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Цель лабораторной работы
+
+  Изучение различных методов визуализация данных.
+
+  \begin{enumerate}
+  \def\labelenumii{\arabic{enumii}.}
+  \setcounter{enumii}{1}
+  \tightlist
+  \item
+    Краткое описание.
+
+    Построение основных графиков, входящих в этап разведочного анализа
+    данных.
+
+    \begin{enumerate}
+    \def\labelenumiii{\arabic{enumiii}.}
+    \setcounter{enumiii}{2}
+    \tightlist
+    \item
+      Задание.
+
+      Выбрать набор данных (датасет).
+
+      Создать ноутбук, который содержит следующие разделы:
+
+      Текстовое описание выбранного Вами набора данных.
+
+      Основные характеристики датасета.
+
+      Визуальное исследование датасета.
+
+      Информация о корреляции признаков
+
+      Сформировать отчет и разместить его в своем репозитории на github.
+
+      \begin{enumerate}
+      \def\labelenumiv{\arabic{enumiv}.}
+      \setcounter{enumiv}{3}
+      \tightlist
+      \item
+        Выполение работы.
+
+        Текстовое описание датасета.
+      \end{enumerate}
+    \end{enumerate}
+  \end{enumerate}
+\end{enumerate}
+
+    В качестве набора данных мы будем использовать набор данных о
+характеристиках вина -
+https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load\_wine.html\#sklearn.datasets.load\_wine
+
+Представлоенная база данных содержит информацию важную для
+сравнительного анализа содержания вина, выращенного на разных
+винодельнях. Благодаря обработке этих данных можно сделать выводы о том,
+к какому результату приводит использование той или иной технологии
+производства.
+
+Датасет состоит из одного файла wine.data.
+
+Файл содержит следующие колонки, обозначающие элементы, содержащиеся в
+вине:
+
+\begin{itemize}
+\tightlist
+\item
+  Alcohol - содержание алкоголя в \%.
+\item
+  Malic acid - яблочная кислота.
+\item
+  Ash - зола в мг/л.
+\item
+  Alcalinity of ash - щелочность золы.
+\item
+  Magnesium - содержание магния в mg.
+\item
+  Total phenols - количество фенолов.
+\item
+  Flavanoids - количество флаваноидов.
+\item
+  Nonflavanoid phenols - количество нефлаваноидных фенолов
+\item
+  Proanthocyanins - проантоцианы.
+\item
+  Color intensity - интенсивность цвета.
+\item
+  Hue - оттенок.
+\item
+  OD280/OD315 of diluted wines - содержание этих элементов в
+  разбавленном вине.
+\item
+  Proline - пролин.
+\end{itemize}
+
+Импортируем необходимые библиотеки и загрузим необходимую базу даннных
+из sklearn при помощи соответствующей функции.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{88}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd} \PY{c+c1}{\PYZsh{}оформление таблицы}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{datasets} \PY{k+kn}{import} \PY{o}{*} \PY{c+c1}{\PYZsh{}получение датасета}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}  \PY{c+c1}{\PYZsh{}создание графиков}
+\PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns} \PY{c+c1}{\PYZsh{}визуализация данных}
+\PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{style}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ticks}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{wine} \PY{o}{=} \PY{n}{load\PYZus{}wine}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Основные характеристики датасета.
+
+    Здесь представлены 13 различных измерений полученных для различных
+состоявляющих, найденных в вине.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{57}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{wine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{feature\PYZus{}names}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{57}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+['alcohol',
+ 'malic\_acid',
+ 'ash',
+ 'alcalinity\_of\_ash',
+ 'magnesium',
+ 'total\_phenols',
+ 'flavanoids',
+ 'nonflavanoid\_phenols',
+ 'proanthocyanins',
+ 'color\_intensity',
+ 'hue',
+ 'od280/od315\_of\_diluted\_wines',
+ 'proline']
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{59}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{wine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{target\PYZus{}names}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{59}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array(['class\_0', 'class\_1', 'class\_2'], dtype='<U7')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Здесь под классами подразумеваются три различных культиватора.
+
+    Рассмотрим ряд первых записей базы данных:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data1} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{c\PYZus{}}\PY{p}{[}\PY{n}{wine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{wine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{target}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,}
+                     \PY{n}{columns}\PY{o}{=} \PY{n}{wine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{feature\PYZus{}names}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{target}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{data1}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   alcohol  malic\_acid   ash  alcalinity\_of\_ash  magnesium  total\_phenols  \textbackslash{}
+0    14.23        1.71  2.43               15.6      127.0           2.80
+1    13.20        1.78  2.14               11.2      100.0           2.65
+2    13.16        2.36  2.67               18.6      101.0           2.80
+3    14.37        1.95  2.50               16.8      113.0           3.85
+4    13.24        2.59  2.87               21.0      118.0           2.80
+
+   flavanoids  nonflavanoid\_phenols  proanthocyanins  color\_intensity   hue  \textbackslash{}
+0        3.06                  0.28             2.29             5.64  1.04
+1        2.76                  0.26             1.28             4.38  1.05
+2        3.24                  0.30             2.81             5.68  1.03
+3        3.49                  0.24             2.18             7.80  0.86
+4        2.69                  0.39             1.82             4.32  1.04
+
+   od280/od315\_of\_diluted\_wines  proline  target
+0                          3.92   1065.0     0.0
+1                          3.40   1050.0     0.0
+2                          3.17   1185.0     0.0
+3                          3.45   1480.0     0.0
+4                          2.93    735.0     0.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Размер датасета - 178 строк и 13 столбцов.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{wine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(178, 13)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{total\PYZus{}count} \PY{o}{=} \PY{n}{wine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Всего строк: }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{total\PYZus{}count}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Всего строк: 178
+    \end{Verbatim}
+
+    Проверим наличие пустых значений в базе данных:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n}{data1}\PY{o}{.}\PY{n}{columns}\PY{p}{:}
+    \PY{n}{temp\PYZus{}null\PYZus{}count} \PY{o}{=} \PY{n}{data1}\PY{p}{[}\PY{n}{data1}\PY{p}{[}\PY{n}{col}\PY{p}{]}\PY{o}{.}\PY{n}{isnull}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ \PYZhy{} }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{col}\PY{p}{,} \PY{n}{temp\PYZus{}null\PYZus{}count}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+alcohol - 0
+malic\_acid - 0
+ash - 0
+alcalinity\_of\_ash - 0
+magnesium - 0
+total\_phenols - 0
+flavanoids - 0
+nonflavanoid\_phenols - 0
+proanthocyanins - 0
+color\_intensity - 0
+hue - 0
+od280/od315\_of\_diluted\_wines - 0
+proline - 0
+target - 0
+    \end{Verbatim}
+
+    Рассмотрим сновные статические характеристики набора данных
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data1}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+          alcohol  malic\_acid         ash  alcalinity\_of\_ash   magnesium  \textbackslash{}
+count  178.000000  178.000000  178.000000         178.000000  178.000000
+mean    13.000618    2.336348    2.366517          19.494944   99.741573
+std      0.811827    1.117146    0.274344           3.339564   14.282484
+min     11.030000    0.740000    1.360000          10.600000   70.000000
+25\%     12.362500    1.602500    2.210000          17.200000   88.000000
+50\%     13.050000    1.865000    2.360000          19.500000   98.000000
+75\%     13.677500    3.082500    2.557500          21.500000  107.000000
+max     14.830000    5.800000    3.230000          30.000000  162.000000
+
+       total\_phenols  flavanoids  nonflavanoid\_phenols  proanthocyanins  \textbackslash{}
+count     178.000000  178.000000            178.000000       178.000000
+mean        2.295112    2.029270              0.361854         1.590899
+std         0.625851    0.998859              0.124453         0.572359
+min         0.980000    0.340000              0.130000         0.410000
+25\%         1.742500    1.205000              0.270000         1.250000
+50\%         2.355000    2.135000              0.340000         1.555000
+75\%         2.800000    2.875000              0.437500         1.950000
+max         3.880000    5.080000              0.660000         3.580000
+
+       color\_intensity         hue  od280/od315\_of\_diluted\_wines      proline  \textbackslash{}
+count       178.000000  178.000000                    178.000000   178.000000
+mean          5.058090    0.957449                      2.611685   746.893258
+std           2.318286    0.228572                      0.709990   314.907474
+min           1.280000    0.480000                      1.270000   278.000000
+25\%           3.220000    0.782500                      1.937500   500.500000
+50\%           4.690000    0.965000                      2.780000   673.500000
+75\%           6.200000    1.120000                      3.170000   985.000000
+max          13.000000    1.710000                      4.000000  1680.000000
+
+           target
+count  178.000000
+mean     0.938202
+std      0.775035
+min      0.000000
+25\%      0.000000
+50\%      1.000000
+75\%      2.000000
+max      2.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Определим значения целевого признака:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data1}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{target}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([0., 1., 2.])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Целевой признак содержит только значения 0, 1 и 2.
+
+    Визуальное исследование датасета.
+
+    Оценим данные представленные в датасете при помощи некоторых видов
+диаграмм.
+
+    Диаграмма рассеивания
+
+    Здесь мы видим соотношение параметров, отражающих количество золы и
+щелочность этой золы.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{64}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)} 
+\PY{n}{sns}\PY{o}{.}\PY{n}{scatterplot}\PY{p}{(}\PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{,} \PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{alcalinity\PYZus{}of\PYZus{}ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{data1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{64}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<AxesSubplot:xlabel='ash', ylabel='alcalinity\_of\_ash'>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_24_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    На следующем графике мы можем разделить эти точки по принципу
+принадлежности к винам разных культиваторов, то есть по ключевому
+признаку.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{56}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)} 
+\PY{n}{sns}\PY{o}{.}\PY{n}{scatterplot}\PY{p}{(}\PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{,} \PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{alcalinity\PYZus{}of\PYZus{}ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{data1}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{target}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{56}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<AxesSubplot:xlabel='ash', ylabel='alcalinity\_of\_ash'>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_26_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Гистограмма
+
+    Данный вид диаграммы позволяет оценить плотность вероятности
+распределения данных.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{86}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)} 
+\PY{n}{sns}\PY{o}{.}\PY{n}{histplot}\PY{p}{(}\PY{n}{data1}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{86}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<AxesSubplot:xlabel='ash', ylabel='Count'>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_29_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Объединяющая диаграмма
+
+    Рассмотрим комбинацию графика и гистрограмм для обоих параметров.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{78}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{sns}\PY{o}{.}\PY{n}{jointplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{alcalinity\PYZus{}of\PYZus{}ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{data1}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{target}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{78}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<seaborn.axisgrid.JointGrid at 0x12bfa5700>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_32_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{85}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{sns}\PY{o}{.}\PY{n}{jointplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{alcalinity\PYZus{}of\PYZus{}ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{data1}\PY{p}{,} \PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{kde}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{85}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<seaborn.axisgrid.JointGrid at 0x12c21c520>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_33_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Парные диаграммы
+
+    Функция, отвечающая за ётот вид диаграмм готовит матрицу графиков,
+представляющих собой комбинацию диаграмм рассеивания для всего набора
+тадных. На главной диагонали при этом строятся гистограммы распределения
+соответствующих показателей.
+
+    Рассмотрим графики с учетом распределения по ключевому признаку.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{92}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{sns}\PY{o}{.}\PY{n}{pairplot}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{target}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{92}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<seaborn.axisgrid.PairGrid at 0x137e816a0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_37_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Ящик с усами
+
+    Данный тип диаграмм отображает одномерное распределение вероятности.
+
+    По горизонтали:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{101}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{sns}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{data1}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{101}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<AxesSubplot:xlabel='ash'>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_41_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    По верткали (с учетом ключегового признака):
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{103}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{sns}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{target}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{data1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{103}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<AxesSubplot:xlabel='target', ylabel='ash'>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_43_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Скрипкова диаграмма
+
+    Данная диаграмма аналогична предыдущей, но по её краям отображается
+распределение плотности.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{110}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{sns}\PY{o}{.}\PY{n}{violinplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{data1}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{110}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<AxesSubplot:xlabel='ash'>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_46_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Проверим правильность отображения по ранее исполььзованному графику.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{114}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{violinplot}\PY{p}{(}\PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{x}\PY{o}{=}\PY{n}{data1}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{histplot}\PY{p}{(}\PY{n}{data1}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{kde}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{114}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<AxesSubplot:xlabel='ash', ylabel='Count'>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_48_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Можно построить аналогичные графики с распределением по ключевому
+признаку.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{113}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{sns}\PY{o}{.}\PY{n}{catplot}\PY{p}{(}\PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ash}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{target}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{data1}\PY{p}{,} \PY{n}{kind}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{violin}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{split}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{113}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<seaborn.axisgrid.FacetGrid at 0x13d8a7430>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_50_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Информация о корреляции признаков.
+
+    Проверка корреляции признаков позволяет решить две задачи:
+
+    \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Определить ценность признака для построения модели машинного обучения.
+  То есть корреляцию признака с целевым признаком.
+\item
+  Понять какие нецелевые признаки линейно зависимы между собой.
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{116}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data1}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{116}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                               alcohol  malic\_acid       ash  \textbackslash{}
+alcohol                       1.000000    0.094397  0.211545
+malic\_acid                    0.094397    1.000000  0.164045
+ash                           0.211545    0.164045  1.000000
+alcalinity\_of\_ash            -0.310235    0.288500  0.443367
+magnesium                     0.270798   -0.054575  0.286587
+total\_phenols                 0.289101   -0.335167  0.128980
+flavanoids                    0.236815   -0.411007  0.115077
+nonflavanoid\_phenols         -0.155929    0.292977  0.186230
+proanthocyanins               0.136698   -0.220746  0.009652
+color\_intensity               0.546364    0.248985  0.258887
+hue                          -0.071747   -0.561296 -0.074667
+od280/od315\_of\_diluted\_wines  0.072343   -0.368710  0.003911
+proline                       0.643720   -0.192011  0.223626
+target                       -0.328222    0.437776 -0.049643
+
+                              alcalinity\_of\_ash  magnesium  total\_phenols  \textbackslash{}
+alcohol                               -0.310235   0.270798       0.289101
+malic\_acid                             0.288500  -0.054575      -0.335167
+ash                                    0.443367   0.286587       0.128980
+alcalinity\_of\_ash                      1.000000  -0.083333      -0.321113
+magnesium                             -0.083333   1.000000       0.214401
+total\_phenols                         -0.321113   0.214401       1.000000
+flavanoids                            -0.351370   0.195784       0.864564
+nonflavanoid\_phenols                   0.361922  -0.256294      -0.449935
+proanthocyanins                       -0.197327   0.236441       0.612413
+color\_intensity                        0.018732   0.199950      -0.055136
+hue                                   -0.273955   0.055398       0.433681
+od280/od315\_of\_diluted\_wines          -0.276769   0.066004       0.699949
+proline                               -0.440597   0.393351       0.498115
+target                                 0.517859  -0.209179      -0.719163
+
+                              flavanoids  nonflavanoid\_phenols  \textbackslash{}
+alcohol                         0.236815             -0.155929
+malic\_acid                     -0.411007              0.292977
+ash                             0.115077              0.186230
+alcalinity\_of\_ash              -0.351370              0.361922
+magnesium                       0.195784             -0.256294
+total\_phenols                   0.864564             -0.449935
+flavanoids                      1.000000             -0.537900
+nonflavanoid\_phenols           -0.537900              1.000000
+proanthocyanins                 0.652692             -0.365845
+color\_intensity                -0.172379              0.139057
+hue                             0.543479             -0.262640
+od280/od315\_of\_diluted\_wines    0.787194             -0.503270
+proline                         0.494193             -0.311385
+target                         -0.847498              0.489109
+
+                              proanthocyanins  color\_intensity       hue  \textbackslash{}
+alcohol                              0.136698         0.546364 -0.071747
+malic\_acid                          -0.220746         0.248985 -0.561296
+ash                                  0.009652         0.258887 -0.074667
+alcalinity\_of\_ash                   -0.197327         0.018732 -0.273955
+magnesium                            0.236441         0.199950  0.055398
+total\_phenols                        0.612413        -0.055136  0.433681
+flavanoids                           0.652692        -0.172379  0.543479
+nonflavanoid\_phenols                -0.365845         0.139057 -0.262640
+proanthocyanins                      1.000000        -0.025250  0.295544
+color\_intensity                     -0.025250         1.000000 -0.521813
+hue                                  0.295544        -0.521813  1.000000
+od280/od315\_of\_diluted\_wines         0.519067        -0.428815  0.565468
+proline                              0.330417         0.316100  0.236183
+target                              -0.499130         0.265668 -0.617369
+
+                              od280/od315\_of\_diluted\_wines   proline    target
+alcohol                                           0.072343  0.643720 -0.328222
+malic\_acid                                       -0.368710 -0.192011  0.437776
+ash                                               0.003911  0.223626 -0.049643
+alcalinity\_of\_ash                                -0.276769 -0.440597  0.517859
+magnesium                                         0.066004  0.393351 -0.209179
+total\_phenols                                     0.699949  0.498115 -0.719163
+flavanoids                                        0.787194  0.494193 -0.847498
+nonflavanoid\_phenols                             -0.503270 -0.311385  0.489109
+proanthocyanins                                   0.519067  0.330417 -0.499130
+color\_intensity                                  -0.428815  0.316100  0.265668
+hue                                               0.565468  0.236183 -0.617369
+od280/od315\_of\_diluted\_wines                      1.000000  0.312761 -0.788230
+proline                                           0.312761  1.000000 -0.633717
+target                                           -0.788230 -0.633717  1.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Корреляционная матрица содержит коэффициенты корреляции между всеми
+парами признаков. При этом очевидно, что матрица симметрична
+относительно главной диагонали, а на самой диагонали находятся единицы.
+
+    Проведем анализ полученной корреляционной матрицы:
+
+    \begin{itemize}
+\tightlist
+\item
+  Признаки, которые точно следует оставить: total\_phenols(0.72),
+  flavanoids(0.85), od280/od315\_of\_diluted\_wines(0.79)
+\item
+  Признаки, которые можно оставить: alcohol(0.33), malic\_acid(0.44),
+  alcalinity\_of\_ash(0.52), nonflavanoid\_phenols(0.49),
+  proanthocyanins(0.50), hue(0.62), proline(0.63)
+\item
+  Признаки, которые лучше убрать: ash(0.049), magnesium(0.21),
+  color\_intensity(0.27)
+\end{itemize}
+
+    \begin{itemize}
+\tightlist
+\item
+  Максимальная корреляция среди пар нецелевых признаков наблюдается
+  между total\_phenols и flavanoids (0.86). Один из этих признаков
+  следует убрать. Лучше для этого подходит total\_phenols, потому что у
+  этого признака слабее корреляция с целевым признаком.
+\end{itemize}
+
+    Можно использовать различные коэффициенты корреляции при построении
+матрицы. Рассмотрим коэффициенты Пирсона (стандартный), Кендалла и
+Спирмена.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{118}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data1}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{n}{method}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pearson}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{118}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                               alcohol  malic\_acid       ash  \textbackslash{}
+alcohol                       1.000000    0.094397  0.211545
+malic\_acid                    0.094397    1.000000  0.164045
+ash                           0.211545    0.164045  1.000000
+alcalinity\_of\_ash            -0.310235    0.288500  0.443367
+magnesium                     0.270798   -0.054575  0.286587
+total\_phenols                 0.289101   -0.335167  0.128980
+flavanoids                    0.236815   -0.411007  0.115077
+nonflavanoid\_phenols         -0.155929    0.292977  0.186230
+proanthocyanins               0.136698   -0.220746  0.009652
+color\_intensity               0.546364    0.248985  0.258887
+hue                          -0.071747   -0.561296 -0.074667
+od280/od315\_of\_diluted\_wines  0.072343   -0.368710  0.003911
+proline                       0.643720   -0.192011  0.223626
+target                       -0.328222    0.437776 -0.049643
+
+                              alcalinity\_of\_ash  magnesium  total\_phenols  \textbackslash{}
+alcohol                               -0.310235   0.270798       0.289101
+malic\_acid                             0.288500  -0.054575      -0.335167
+ash                                    0.443367   0.286587       0.128980
+alcalinity\_of\_ash                      1.000000  -0.083333      -0.321113
+magnesium                             -0.083333   1.000000       0.214401
+total\_phenols                         -0.321113   0.214401       1.000000
+flavanoids                            -0.351370   0.195784       0.864564
+nonflavanoid\_phenols                   0.361922  -0.256294      -0.449935
+proanthocyanins                       -0.197327   0.236441       0.612413
+color\_intensity                        0.018732   0.199950      -0.055136
+hue                                   -0.273955   0.055398       0.433681
+od280/od315\_of\_diluted\_wines          -0.276769   0.066004       0.699949
+proline                               -0.440597   0.393351       0.498115
+target                                 0.517859  -0.209179      -0.719163
+
+                              flavanoids  nonflavanoid\_phenols  \textbackslash{}
+alcohol                         0.236815             -0.155929
+malic\_acid                     -0.411007              0.292977
+ash                             0.115077              0.186230
+alcalinity\_of\_ash              -0.351370              0.361922
+magnesium                       0.195784             -0.256294
+total\_phenols                   0.864564             -0.449935
+flavanoids                      1.000000             -0.537900
+nonflavanoid\_phenols           -0.537900              1.000000
+proanthocyanins                 0.652692             -0.365845
+color\_intensity                -0.172379              0.139057
+hue                             0.543479             -0.262640
+od280/od315\_of\_diluted\_wines    0.787194             -0.503270
+proline                         0.494193             -0.311385
+target                         -0.847498              0.489109
+
+                              proanthocyanins  color\_intensity       hue  \textbackslash{}
+alcohol                              0.136698         0.546364 -0.071747
+malic\_acid                          -0.220746         0.248985 -0.561296
+ash                                  0.009652         0.258887 -0.074667
+alcalinity\_of\_ash                   -0.197327         0.018732 -0.273955
+magnesium                            0.236441         0.199950  0.055398
+total\_phenols                        0.612413        -0.055136  0.433681
+flavanoids                           0.652692        -0.172379  0.543479
+nonflavanoid\_phenols                -0.365845         0.139057 -0.262640
+proanthocyanins                      1.000000        -0.025250  0.295544
+color\_intensity                     -0.025250         1.000000 -0.521813
+hue                                  0.295544        -0.521813  1.000000
+od280/od315\_of\_diluted\_wines         0.519067        -0.428815  0.565468
+proline                              0.330417         0.316100  0.236183
+target                              -0.499130         0.265668 -0.617369
+
+                              od280/od315\_of\_diluted\_wines   proline    target
+alcohol                                           0.072343  0.643720 -0.328222
+malic\_acid                                       -0.368710 -0.192011  0.437776
+ash                                               0.003911  0.223626 -0.049643
+alcalinity\_of\_ash                                -0.276769 -0.440597  0.517859
+magnesium                                         0.066004  0.393351 -0.209179
+total\_phenols                                     0.699949  0.498115 -0.719163
+flavanoids                                        0.787194  0.494193 -0.847498
+nonflavanoid\_phenols                             -0.503270 -0.311385  0.489109
+proanthocyanins                                   0.519067  0.330417 -0.499130
+color\_intensity                                  -0.428815  0.316100  0.265668
+hue                                               0.565468  0.236183 -0.617369
+od280/od315\_of\_diluted\_wines                      1.000000  0.312761 -0.788230
+proline                                           0.312761  1.000000 -0.633717
+target                                           -0.788230 -0.633717  1.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{119}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data1}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{n}{method}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{kendall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{119}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                               alcohol  malic\_acid       ash  \textbackslash{}
+alcohol                       1.000000    0.093844  0.170154
+malic\_acid                    0.093844    1.000000  0.158178
+ash                           0.170154    0.158178  1.000000
+alcalinity\_of\_ash            -0.212978    0.210119  0.258352
+magnesium                     0.250506    0.050869  0.254246
+total\_phenols                 0.209099   -0.174929  0.089855
+flavanoids                    0.191087   -0.211918  0.049474
+nonflavanoid\_phenols         -0.109554    0.175129  0.098937
+proanthocyanins               0.133526   -0.168714  0.018240
+color\_intensity               0.434353    0.195607  0.187786
+hue                          -0.021717   -0.388707 -0.037234
+od280/od315\_of\_diluted\_wines  0.061513   -0.162909 -0.006341
+proline                       0.449387   -0.044660  0.171574
+target                       -0.238984    0.247494 -0.038085
+
+                              alcalinity\_of\_ash  magnesium  total\_phenols  \textbackslash{}
+alcohol                               -0.212978   0.250506       0.209099
+malic\_acid                             0.210119   0.050869      -0.174929
+ash                                    0.258352   0.254246       0.089855
+alcalinity\_of\_ash                      1.000000  -0.121005      -0.256669
+magnesium                             -0.121005   1.000000       0.172195
+total\_phenols                         -0.256669   0.172195       1.000000
+flavanoids                            -0.309865   0.161603       0.701999
+nonflavanoid\_phenols                   0.278091  -0.158361      -0.310443
+proanthocyanins                       -0.171404   0.117871       0.466517
+color\_intensity                       -0.057281   0.241781       0.028264
+hue                                   -0.239210   0.023760       0.289210
+od280/od315\_of\_diluted\_wines          -0.226253   0.034307       0.478267
+proline                               -0.313218   0.343016       0.280203
+target                                 0.449402  -0.184992      -0.590404
+
+                              flavanoids  nonflavanoid\_phenols  \textbackslash{}
+alcohol                         0.191087             -0.109554
+malic\_acid                     -0.211918              0.175129
+ash                             0.049474              0.098937
+alcalinity\_of\_ash              -0.309865              0.278091
+magnesium                       0.161603             -0.158361
+total\_phenols                   0.701999             -0.310443
+flavanoids                      1.000000             -0.378099
+nonflavanoid\_phenols           -0.378099              1.000000
+proanthocyanins                 0.534615             -0.269189
+color\_intensity                 0.028674              0.036065
+hue                             0.354372             -0.179755
+od280/od315\_of\_diluted\_wines    0.520448             -0.363787
+proline                         0.263661             -0.174108
+target                         -0.725255              0.379234
+
+                              proanthocyanins  color\_intensity       hue  \textbackslash{}
+alcohol                              0.133526         0.434353 -0.021717
+malic\_acid                          -0.168714         0.195607 -0.388707
+ash                                  0.018240         0.187786 -0.037234
+alcalinity\_of\_ash                   -0.171404        -0.057281 -0.239210
+magnesium                            0.117871         0.241781  0.023760
+total\_phenols                        0.466517         0.028264  0.289210
+flavanoids                           0.534615         0.028674  0.354372
+nonflavanoid\_phenols                -0.269189         0.036065 -0.179755
+proanthocyanins                      1.000000        -0.014962  0.231071
+color\_intensity                     -0.014962         1.000000 -0.291561
+hue                                  0.231071        -0.291561  1.000000
+od280/od315\_of\_diluted\_wines         0.369104        -0.206046  0.324678
+proline                              0.204172         0.316632  0.143508
+target                              -0.450225         0.065124 -0.479229
+
+                              od280/od315\_of\_diluted\_wines   proline    target
+alcohol                                           0.061513  0.449387 -0.238984
+malic\_acid                                       -0.162909 -0.044660  0.247494
+ash                                              -0.006341  0.171574 -0.038085
+alcalinity\_of\_ash                                -0.226253 -0.313218  0.449402
+magnesium                                         0.034307  0.343016 -0.184992
+total\_phenols                                     0.478267  0.280203 -0.590404
+flavanoids                                        0.520448  0.263661 -0.725255
+nonflavanoid\_phenols                             -0.363787 -0.174108  0.379234
+proanthocyanins                                   0.369104  0.204172 -0.450225
+color\_intensity                                  -0.206046  0.316632  0.065124
+hue                                               0.324678  0.143508 -0.479229
+od280/od315\_of\_diluted\_wines                      1.000000  0.151559 -0.607572
+proline                                           0.151559  1.000000 -0.406260
+target                                           -0.607572 -0.406260  1.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{121}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data1}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{n}{method}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{spearman}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{121}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                               alcohol  malic\_acid       ash  \textbackslash{}
+alcohol                       1.000000    0.140430  0.243722
+malic\_acid                    0.140430    1.000000  0.230674
+ash                           0.243722    0.230674  1.000000
+alcalinity\_of\_ash            -0.306598    0.304069  0.366374
+magnesium                     0.365503    0.080188  0.361488
+total\_phenols                 0.310920   -0.280225  0.132193
+flavanoids                    0.294740   -0.325202  0.078796
+nonflavanoid\_phenols         -0.162207    0.255236  0.145583
+proanthocyanins               0.192734   -0.244825  0.024384
+color\_intensity               0.635425    0.290307  0.283047
+hue                          -0.024203   -0.560265 -0.050183
+od280/od315\_of\_diluted\_wines  0.103050   -0.255185 -0.007500
+proline                       0.633580   -0.057466  0.253163
+target                       -0.354167    0.346913 -0.053988
+
+                              alcalinity\_of\_ash  magnesium  total\_phenols  \textbackslash{}
+alcohol                               -0.306598   0.365503       0.310920
+malic\_acid                             0.304069   0.080188      -0.280225
+ash                                    0.366374   0.361488       0.132193
+alcalinity\_of\_ash                      1.000000  -0.169558      -0.376657
+magnesium                             -0.169558   1.000000       0.246417
+total\_phenols                         -0.376657   0.246417       1.000000
+flavanoids                            -0.443770   0.233167       0.879404
+nonflavanoid\_phenols                   0.389390  -0.236786      -0.448013
+proanthocyanins                       -0.253695   0.173647       0.666689
+color\_intensity                       -0.073776   0.357029       0.011162
+hue                                   -0.352507   0.036095       0.439457
+od280/od315\_of\_diluted\_wines          -0.325890   0.056963       0.687207
+proline                               -0.456090   0.507575       0.419470
+target                                 0.569792  -0.250498      -0.726544
+
+                              flavanoids  nonflavanoid\_phenols  \textbackslash{}
+alcohol                         0.294740             -0.162207
+malic\_acid                     -0.325202              0.255236
+ash                             0.078796              0.145583
+alcalinity\_of\_ash              -0.443770              0.389390
+magnesium                       0.233167             -0.236786
+total\_phenols                   0.879404             -0.448013
+flavanoids                      1.000000             -0.543897
+nonflavanoid\_phenols           -0.543897              1.000000
+proanthocyanins                 0.730322             -0.384629
+color\_intensity                -0.042910              0.059639
+hue                             0.535430             -0.267813
+od280/od315\_of\_diluted\_wines    0.741533             -0.494950
+proline                         0.429904             -0.270112
+target                         -0.854908              0.474205
+
+                              proanthocyanins  color\_intensity       hue  \textbackslash{}
+alcohol                              0.192734         0.635425 -0.024203
+malic\_acid                          -0.244825         0.290307 -0.560265
+ash                                  0.024384         0.283047 -0.050183
+alcalinity\_of\_ash                   -0.253695        -0.073776 -0.352507
+magnesium                            0.173647         0.357029  0.036095
+total\_phenols                        0.666689         0.011162  0.439457
+flavanoids                           0.730322        -0.042910  0.535430
+nonflavanoid\_phenols                -0.384629         0.059639 -0.267813
+proanthocyanins                      1.000000        -0.030947  0.342795
+color\_intensity                     -0.030947         1.000000 -0.418522
+hue                                  0.342795        -0.418522  1.000000
+od280/od315\_of\_diluted\_wines         0.554031        -0.317516  0.485454
+proline                              0.308249         0.457096  0.207740
+target                              -0.570648         0.131170 -0.616570
+
+                              od280/od315\_of\_diluted\_wines   proline    target
+alcohol                                           0.103050  0.633580 -0.354167
+malic\_acid                                       -0.255185 -0.057466  0.346913
+ash                                              -0.007500  0.253163 -0.053988
+alcalinity\_of\_ash                                -0.325890 -0.456090  0.569792
+magnesium                                         0.056963  0.507575 -0.250498
+total\_phenols                                     0.687207  0.419470 -0.726544
+flavanoids                                        0.741533  0.429904 -0.854908
+nonflavanoid\_phenols                             -0.494950 -0.270112  0.474205
+proanthocyanins                                   0.554031  0.308249 -0.570648
+color\_intensity                                  -0.317516  0.457096  0.131170
+hue                                               0.485454  0.207740 -0.616570
+od280/od315\_of\_diluted\_wines                      1.000000  0.253266 -0.743787
+proline                                           0.253266  1.000000 -0.576383
+target                                           -0.743787 -0.576383  1.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    В использованном датасете довольно большое количество признаков, что
+усложняет использование таблиц. Поэтому для удобства модно использовать
+тепловые карты, которые так же будут отражать степень корреляции.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{124}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{data1}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{124}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<AxesSubplot:>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_64_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Для ещё большей оптимизации можно оставить лишь одну половину матрицы,
+учитывая то, что вторая половина дублирует первую.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{128}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mask} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{data1}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{bool}\PY{p}{)}
+\PY{n}{mask}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{tril\PYZus{}indices\PYZus{}from}\PY{p}{(}\PY{n}{mask}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{k+kc}{True}
+\PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{data1}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{mask}\PY{o}{=}\PY{n}{mask}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{128}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<AxesSubplot:>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_66_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    В таком же виде можно провести сравнение таблиц, построенных по разным
+коэффициентам.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{129}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{n}{sharex}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{col}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{sharey}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{row}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{data1}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{n}{method}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pearson}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{data1}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{n}{method}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{kendall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{data1}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{n}{method}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{spearman}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Корреляционные матрицы, построенные различными методами}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pearson}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Kendall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Spearman}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Лабораторная работа №1_files/Лабораторная работа №1_68_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

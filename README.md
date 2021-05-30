@@ -12,3 +12,5 @@
 ### Рубежные контроли
 - [Рубежный контроль 1](https://nbviewer.jupyter.org/github/SacrumImp/Labs_TML/blob/main/RK1/Рубежный%20контроль%20№1.ipynb)
 	- Тема: Технологии разведочного анализа и обработки данных.
+- [Рубежный контроль 2](https://nbviewer.jupyter.org/github/SacrumImp/Labs_TML/blob/main/RK2/Рубежный%20контроль%20№2.ipynb)
+	- Тема: Методы построения моделей машинного обучения.

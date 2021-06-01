@@ -15,8 +15,12 @@
 - [Лабораторная работа №5](https://nbviewer.jupyter.org/github/SacrumImp/Labs_TML/blob/main/Lab%205/Лабораторная%20работа%20№5.ipynb)
 	- Тема: Ансамбли моделей машинного обучения.
 	- [**Отчет**](https://github.com/SacrumImp/Labs_TML/blob/main/Lab%205/Лабораторная%20работа%20№5.pdf)
+- [Лабораторная работа №6](https://nbviewer.jupyter.org/github/SacrumImp/Labs_TML/blob/main/Lab%206/Лабораторная%20работа%20№6.ipynb)
+	- Тема: Создание веб-приложения для демонстрации моделей машинного обучения.
+	- [**Отчет**](https://github.com/SacrumImp/Labs_TML/blob/main/Lab%206/Лабораторная%20работа%20№6.pdf)
 ### Рубежные контроли
 - [Рубежный контроль 1](https://nbviewer.jupyter.org/github/SacrumImp/Labs_TML/blob/main/RK1/Рубежный%20контроль%20№1.ipynb)
 	- Тема: Технологии разведочного анализа и обработки данных.
 - [Рубежный контроль 2](https://nbviewer.jupyter.org/github/SacrumImp/Labs_TML/blob/main/RK2/Рубежный%20контроль%20№2.ipynb)
 	- Тема: Методы построения моделей машинного обучения.
+### Курсовая работа

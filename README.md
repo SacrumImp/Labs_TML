@@ -24,3 +24,6 @@
 - [Рубежный контроль 2](https://nbviewer.jupyter.org/github/SacrumImp/Labs_TML/blob/main/RK2/Рубежный%20контроль%20№2.ipynb)
 	- Тема: Методы построения моделей машинного обучения.
 ### Курсовая работа
+- [Курсовая работа](https://nbviewer.jupyter.org/github/SacrumImp/Labs_TML/blob/main/Курсовая%20работа/Курсовая%20работа.ipynb)
+	- Тема: Типовое исследование датасета: «Распознавание пола по голосу».
+	- [**Отчет**](https://github.com/SacrumImp/Labs_TML/blob/main/Курсовая%20работа/Курсовая%20работа.pdf)
